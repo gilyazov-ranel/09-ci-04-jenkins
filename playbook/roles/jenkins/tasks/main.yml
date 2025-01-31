@@ -1,0 +1,99 @@
+---
+- name: Удаление OpenJDK 11
+  apt:
+    name: openjdk-11-jdk
+    state: absent
+
+- name: Установка необходимых пакетов
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - openjdk-17-jdk
+    state: present
+
+- name: Загрузка GPG ключа для Jenkins
+  command: wget -q -O /tmp/jenkins.io.key https://pkg.jenkins.io/debian/jenkins.io.key
+
+- name: Преобразование GPG ключа
+  command: gpg --yes --dearmor -o /usr/share/keyrings/jenkins-keyring.gpg /tmp/jenkins.io.key
+
+- name: Добавление репозитория Jenkins
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/jenkins-keyring.gpg] https://pkg.jenkins.io/debian-stable binary/"
+    state: present
+
+- name: Обновление кэша APT
+  apt:
+    update_cache: yes
+
+- name: Создание пользователя Jenkins
+  user:
+    name: jenkins
+    shell: /bin/false
+    system: yes
+
+- name: Создание каталога для Jenkins
+  file:
+    path: /usr/share/jenkins
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
+- name: Загрузка файла jenkins.war
+  get_url:
+    url: https://get.jenkins.io/war-stable/latest/jenkins.war
+    dest: /usr/share/jenkins/jenkins.war
+
+- name: Установка Jenkins
+  apt:
+    name: jenkins
+    state: present
+
+- name: Убедитесь, что Jenkins установлен
+  apt:
+    name: jenkins
+    state: present
+  register: jenkins_install
+
+- name: Запуск и включение Jenkins
+  systemd:
+    name: jenkins
+    state: started
+    enabled: yes
+  register: jenkins_service
+  ignore_errors: yes
+
+- name: Проверка статуса службы Jenkins
+  command: systemctl status jenkins.service
+  register: jenkins_status
+  when: jenkins_service is failed
+
+- name: Вывод статуса службы Jenkins
+  debug:
+    var: jenkins_status.stdout
+  when: jenkins_service is failed
+
+- name: Просмотр журналов Jenkins
+  command: journalctl -xeu jenkins.service
+  register: jenkins_logs
+  when: jenkins_service is failed
+
+- name: Вывод журналов Jenkins
+  debug:
+    var: jenkins_logs.stdout
+  when: jenkins_service is failed
+
+- name: Проверка наличия Java
+  command: java -version
+  register: java_version
+  ignore_errors: yes
+
+- name: Установка Java, если она не установлена
+  apt:
+    name: openjdk-11-jdk
+    state: present
+  when: java_version is failed

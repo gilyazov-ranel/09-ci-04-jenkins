@@ -1,0 +1,14 @@
+---
+- name: Установка Jenkins
+  hosts: 
+    - jenkins-master
+  become: true
+  roles:
+    - jenkins
+
+- name: Установка Jenkins
+  hosts: 
+    - jenkins-agent
+  become: true
+  roles:
+    - jenkins
