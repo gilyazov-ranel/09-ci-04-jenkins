@@ -2,8 +2,8 @@
 jenkins-master:
   hosts:
     jenkins-master-01:
-      ansible_host: 158.160.144.252
+      ansible_host: 158.160.151.82
 jenkins-agent:
   hosts:
     jenkins-agent-01:
-      ansible_host: 158.160.151.135
+      ansible_host: 158.160.145.19
