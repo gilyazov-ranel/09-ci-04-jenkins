@@ -16,3 +16,9 @@
 [Console](https://github.com/user-attachments/assets/4db4d9cd-d724-44cc-9ba7-730cf449a734)
 
 [Результат](https://github.com/user-attachments/assets/cfa3760e-88b4-4c7b-8834-31868feb1ac5)
+
+### Создать Multibranch Pipeline на запуск Jenkinsfile из репозитория
+
+[Scan Multibranch Pipeline Log](https://github.com/user-attachments/assets/0bc797af-c201-4c11-99c1-31ed7a0ef808)
+
+[Результат](https://github.com/user-attachments/assets/be437891-6f76-4bd9-9937-b16889126681)
