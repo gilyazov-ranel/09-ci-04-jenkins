@@ -22,3 +22,7 @@
 [Scan Multibranch Pipeline Log](https://github.com/user-attachments/assets/0bc797af-c201-4c11-99c1-31ed7a0ef808)
 
 [Результат](https://github.com/user-attachments/assets/be437891-6f76-4bd9-9937-b16889126681)
+
+### Создать Scripted Pipeline, наполнить его скриптом из pipeline.
+
+[Результат](https://github.com/user-attachments/assets/bccd6f9e-3b4d-4465-b02d-57b8fb6aef74)
